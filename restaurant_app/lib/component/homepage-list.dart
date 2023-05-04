@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomepageList extends StatefulWidget {
-  const HomepageList({super.key});
+  final Key? key;
+
+  const HomepageList({this.key}) : super(key: key);
 
   @override
   State<HomepageList> createState() => _HomepageListState();
@@ -87,122 +89,135 @@ class _HomepageListState extends State<HomepageList> {
             ),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: data["restourant"]?.length ?? 0,
-                itemBuilder: (context, index) {
-                  final restaurant = data["restourant"]![index];
-                  return Container(
-                    padding: const EdgeInsets.all(0),
-                    margin: const EdgeInsets.symmetric(vertical: 15),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 150,
-                          width: double.infinity,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                                "https://restaurant-api.dicoding.dev/images/medium/${restaurant["pictureId"]}",
-                                fit: BoxFit.fitWidth),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Row(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(right: 20),
-                                child: Icon(
-                                  Icons.restaurant_sharp,
-                                  color: Colors.red,
-                                  size: 40,
-                                ),
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    restaurant["name"] as String,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    restaurant["city"] as String,
-                                    style:
-                                        const TextStyle(color: Colors.black45),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Divider(
-                          thickness: 2,
-                          color: Colors.black12,
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.yellow[800],
-                                  ),
-                                  Text(
-                                    "${restaurant["rating"]}  (205)",
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black45),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: const [
-                                  Icon(
-                                    Icons.lock_clock_outlined,
-                                    color: Colors.black45,
-                                  ),
-                                  Text(
-                                    "30 - 45 Mins",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black45),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: const [
-                                  Icon(
-                                    Icons.home,
-                                    color: Colors.black45,
-                                  ),
-                                  Text(
-                                    "Free",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black45),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+              child: buildListRestaurant(context),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildListRestaurant(BuildContext context) {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: data["restourant"]?.length ?? 0,
+      itemBuilder: (context, index) {
+        final restaurant = data["restourant"]![index];
+        return Container(
+          padding: const EdgeInsets.all(0),
+          margin: const EdgeInsets.symmetric(vertical: 15),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 150,
+                width: double.infinity,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                      "https://restaurant-api.dicoding.dev/images/medium/${restaurant["pictureId"]}",
+                      fit: BoxFit.fitWidth),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(right: 20),
+                          child: Icon(
+                            Icons.restaurant_sharp,
+                            color: Colors.red,
+                            size: 40,
+                          ),
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              restaurant["name"] as String,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              restaurant["city"] as String,
+                              style: const TextStyle(color: Colors.black45),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const Icon(
+                      Icons.favorite_border_outlined,
+                      color: Colors.black26,
+                      size: 40,
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(
+                thickness: 2,
+                color: Colors.black12,
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.star,
+                          color: Colors.yellow[800],
+                        ),
+                        Text(
+                          "${restaurant["rating"]}  (205)",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black45),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: const [
+                        Icon(
+                          Icons.lock_clock_outlined,
+                          color: Colors.black45,
+                        ),
+                        Text(
+                          "30 - 45 Mins",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black45),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: const [
+                        Icon(
+                          Icons.home,
+                          color: Colors.black45,
+                        ),
+                        Text(
+                          "Free",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black45),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
