@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:restaurant_app/screen/datail-restaurant.dart';
 
 class HomepageList extends StatefulWidget {
-  final Key? key;
-
-  const HomepageList({this.key}) : super(key: key);
+  const HomepageList({super.key});
 
   @override
   State<HomepageList> createState() => _HomepageListState();
@@ -71,24 +70,36 @@ class _HomepageListState extends State<HomepageList> {
   };
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(12),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
+            Container(
+              margin: EdgeInsets.only(bottom: 15),
+              width: 230,
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                " List Restourants",
-                style: GoogleFonts.castoro(
-                  fontSize: 25,
-                ),
-                textAlign: TextAlign.left,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    " List Restourants",
+                    style: GoogleFonts.castoro(
+                      fontSize: 25,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                  const Divider(
+                    thickness: 2,
+                    color: Colors.black12,
+                    height: 10,
+                  )
+                ],
               ),
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
+            Flexible(
               child: buildListRestaurant(context),
             ),
           ],
@@ -99,13 +110,14 @@ class _HomepageListState extends State<HomepageList> {
 
   Widget buildListRestaurant(BuildContext context) {
     return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: data["restourant"]?.length ?? 0,
       itemBuilder: (context, index) {
         final restaurant = data["restourant"]![index];
         return Container(
           padding: const EdgeInsets.all(0),
-          margin: const EdgeInsets.symmetric(vertical: 15),
+          margin: EdgeInsets.fromLTRB(20, 0, 20, 30),
           child: Column(
             children: [
               SizedBox(
@@ -121,40 +133,30 @@ class _HomepageListState extends State<HomepageList> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
+                    const Padding(
+                      padding: EdgeInsets.only(right: 20),
+                      child: Icon(
+                        Icons.restaurant_sharp,
+                        color: Colors.red,
+                        size: 40,
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.only(right: 20),
-                          child: Icon(
-                            Icons.restaurant_sharp,
-                            color: Colors.red,
-                            size: 40,
+                        Text(
+                          restaurant["name"] as String,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              restaurant["name"] as String,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              restaurant["city"] as String,
-                              style: const TextStyle(color: Colors.black45),
-                            ),
-                          ],
+                        Text(
+                          restaurant["city"] as String,
+                          style: const TextStyle(color: Colors.black45),
                         ),
                       ],
-                    ),
-                    const Icon(
-                      Icons.favorite_border_outlined,
-                      color: Colors.black26,
-                      size: 40,
                     ),
                   ],
                 ),
