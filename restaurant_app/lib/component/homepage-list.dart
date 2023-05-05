@@ -70,146 +70,157 @@ class _HomepageListState extends State<HomepageList> {
   };
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(12),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
+            Container(
+              margin: EdgeInsets.only(bottom: 15),
+              width: 230,
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                " List Restourants",
-                style: GoogleFonts.castoro(
-                  fontSize: 25,
-                ),
-                textAlign: TextAlign.left,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    " List Restourants",
+                    style: GoogleFonts.castoro(
+                      fontSize: 25,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                  const Divider(
+                    thickness: 2,
+                    color: Colors.black12,
+                    height: 10,
+                  )
+                ],
               ),
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: data["restourant"]?.length ?? 0,
-                itemBuilder: (context, index) {
-                  final restaurant = data["restourant"]![index];
-                  return Container(
-                    padding: const EdgeInsets.all(0),
-                    margin: const EdgeInsets.symmetric(vertical: 15),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 150,
-                          width: double.infinity,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) => const DetailRestaurant()));
-                              },
-                              child: Image.network(
-                                  "https://restaurant-api.dicoding.dev/images/medium/${restaurant["pictureId"]}",
-                                  fit: BoxFit.fitWidth),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Row(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(right: 20),
-                                child: Icon(
-                                  Icons.restaurant_sharp,
-                                  color: Colors.red,
-                                  size: 40,
-                                ),
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    restaurant["name"] as String,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    restaurant["city"] as String,
-                                    style:
-                                        const TextStyle(color: Colors.black45),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Divider(
-                          thickness: 2,
-                          color: Colors.black12,
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.yellow[800],
-                                  ),
-                                  Text(
-                                    "${restaurant["rating"]}  (205)",
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black45),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: const [
-                                  Icon(
-                                    Icons.lock_clock_outlined,
-                                    color: Colors.black45,
-                                  ),
-                                  Text(
-                                    "30 - 45 Mins",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black45),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: const [
-                                  Icon(
-                                    Icons.home,
-                                    color: Colors.black45,
-                                  ),
-                                  Text(
-                                    "Free",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black45),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+            Flexible(
+              child: buildListRestaurant(context),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  //List Restaurant
+  Widget buildListRestaurant(BuildContext context) {
+    return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: data["restourant"]?.length ?? 0,
+      itemBuilder: (context, index) {
+        final restaurant = data["restourant"]![index];
+        return Container(
+          padding: const EdgeInsets.all(0),
+          margin: EdgeInsets.fromLTRB(20, 0, 20, 30),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 150,
+                width: double.infinity,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                      "https://restaurant-api.dicoding.dev/images/medium/${restaurant["pictureId"]}",
+                      fit: BoxFit.fitWidth),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(right: 20),
+                      child: Icon(
+                        Icons.restaurant_sharp,
+                        color: Colors.red,
+                        size: 40,
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          restaurant["name"] as String,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          restaurant["city"] as String,
+                          style: const TextStyle(color: Colors.black45),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(
+                thickness: 2,
+                color: Colors.black12,
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.star,
+                          color: Colors.yellow[800],
+                        ),
+                        Text(
+                          "${restaurant["rating"]}  (205)",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black45),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: const [
+                        Icon(
+                          Icons.lock_clock_outlined,
+                          color: Colors.black45,
+                        ),
+                        Text(
+                          "30 - 45 Mins",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black45),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: const [
+                        Icon(
+                          Icons.home,
+                          color: Colors.black45,
+                        ),
+                        Text(
+                          "Free",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black45),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
