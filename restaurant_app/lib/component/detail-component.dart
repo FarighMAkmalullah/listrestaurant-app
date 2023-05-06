@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:restaurant_app/screen/review-page.dart';
 
 class DetailComponent extends StatefulWidget {
   const DetailComponent({super.key});
@@ -175,7 +176,10 @@ class _DetailComponentState extends State<DetailComponent> {
                   ],
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => const ReviewPage()));
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red, // warna teks
                     shape: RoundedRectangleBorder(
@@ -225,6 +229,7 @@ class _DetailComponentState extends State<DetailComponent> {
       )
     ]);
   }
+
   Widget buildListFoods(BuildContext context) {
     int? lengthFoods = data['restaurant']?['menus']?['foods']?.length;
     return Column(
