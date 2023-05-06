@@ -225,7 +225,6 @@ class _DetailComponentState extends State<DetailComponent> {
       )
     ]);
   }
-
   Widget buildListFoods(BuildContext context) {
     int? lengthFoods = data['restaurant']?['menus']?['foods']?.length;
     return Column(
