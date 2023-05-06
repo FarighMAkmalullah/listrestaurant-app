@@ -14,7 +14,7 @@ class _HomepageState extends State<Homepage> {
 
   final List<Widget> _children = [
     const HomepageList(),
-    const FavoritePage(),
+    const FavoritePageList(),
   ];
 
   void onTabTapped(int index) {
@@ -33,13 +33,18 @@ class _HomepageState extends State<Homepage> {
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
+        elevation: 0,
       ),
       body: _children[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
         onTap: onTabTapped,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "List"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
           BottomNavigationBarItem(
               icon: Icon(Icons.favorite), label: "Favorite"),
         ],
