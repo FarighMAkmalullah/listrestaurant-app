@@ -126,9 +126,15 @@ class _HomepageListState extends State<HomepageList> {
                 width: double.infinity,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                      "https://restaurant-api.dicoding.dev/images/medium/${restaurant["pictureId"]}",
-                      fit: BoxFit.fitWidth),
+                  child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => const DetailRestaurant()));
+                              },
+                              child: Image.network(
+                                  "https://restaurant-api.dicoding.dev/images/medium/${restaurant["pictureId"]}",
+                                  fit: BoxFit.fitWidth),
+                            ),
                 ),
               ),
               Padding(
