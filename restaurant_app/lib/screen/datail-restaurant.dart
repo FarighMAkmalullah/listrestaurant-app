@@ -17,6 +17,14 @@ class DetailRestaurant extends StatelessWidget {
         backgroundColor: Colors.white,
       ),
       body: const DetailComponent(),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.red,
+        onPressed: () {},
+        child: const Icon(
+          Icons.favorite,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }

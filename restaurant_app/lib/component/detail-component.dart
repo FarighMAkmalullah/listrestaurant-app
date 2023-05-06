@@ -9,7 +9,7 @@ class DetailComponent extends StatefulWidget {
 }
 
 class _DetailComponentState extends State<DetailComponent> {
-  var data = {
+  Map<String, dynamic> data = {
     "restaurant": {
       "id": "rqdv5juczeskfw1e867",
       "name": "Melting Pot",
@@ -68,7 +68,7 @@ class _DetailComponentState extends State<DetailComponent> {
             fit: BoxFit.fitWidth),
       ),
       Container(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
+        padding: const EdgeInsets.symmetric(horizontal: 35),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -78,21 +78,249 @@ class _DetailComponentState extends State<DetailComponent> {
             Text(
               data["restaurant"]?["name"] as String,
               style: GoogleFonts.castoro(
-                fontSize: 22,
-              ),
+                  fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 7,
             ),
             Row(
               children: [
                 const Icon(
                   Icons.location_on,
                 ),
+                const SizedBox(
+                  width: 5,
+                ),
                 Text(
-                    "${data["restaurant"]?["city"]}, ${data["restaurant"]?["address"]}")
+                  "${data["restaurant"]?["city"]}, ${data["restaurant"]?["address"]}",
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: Colors.black45,
+                  ),
+                )
               ],
-            )
+            ),
+            const SizedBox(
+              height: 7,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.circle,
+                      size: 15,
+                      color: Colors.red[300],
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      (data["restaurant"]?["categories"] as List<dynamic>)[0]
+                          ["name"],
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.red[300],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  width: 15,
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.circle,
+                      size: 15,
+                      color: Colors.red[300],
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      (data["restaurant"]?["categories"] as List<dynamic>)[1]
+                          ["name"],
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.red[300],
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 7,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.star,
+                      color: Colors.yellow[800],
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      "${data["restaurant"]!["rating"]}",
+                      style: GoogleFonts.castoro(
+                        fontSize: 22,
+                      ),
+                    ),
+                  ],
+                ),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red, // warna teks
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(25.0), // radius sudut tombol
+                    ),
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      children: const [
+                        Icon(Icons.reviews),
+                        SizedBox(
+                          width: 7,
+                        ),
+                        Text("Reviews"),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 7,
+            ),
+            Text(
+              "\n     ${data["restaurant"]?["description"]}",
+              textAlign: TextAlign.justify,
+              style: const TextStyle(
+                color: Colors.black45,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 25),
+              padding: const EdgeInsets.all(10),
+              child: buildListFoods(context),
+            ),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: buildListDrink(context),
+            ),
+            const SizedBox(
+              height: 100,
+            ),
           ],
         ),
       )
     ]);
+  }
+
+  Widget buildListFoods(BuildContext context) {
+    int? lengthFoods = data['restaurant']?['menus']?['foods']?.length;
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Foods",
+              style: GoogleFonts.castoro(
+                  fontSize: 17, fontWeight: FontWeight.bold),
+            ),
+            Icon(Icons.add)
+          ],
+        ),
+        const Divider(
+          thickness: 2,
+          color: Colors.black12,
+          height: 10,
+        ),
+        ListView.builder(
+          itemCount: lengthFoods,
+          itemBuilder: (context, index) {
+            return Container(
+              padding: EdgeInsets.symmetric(vertical: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "${data['restaurant']['menus']['foods'][index]['name']}",
+                    style: const TextStyle(
+                      color: Colors.black45,
+                    ),
+                  ),
+                  const Icon(
+                    Icons.fastfood,
+                    color: Colors.black45,
+                  ),
+                ],
+              ),
+            );
+          },
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+        )
+      ],
+    );
+  }
+
+  Widget buildListDrink(BuildContext context) {
+    int? lengthFoods = data['restaurant']?['menus']?['drinks']?.length;
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Drinks",
+              style: GoogleFonts.castoro(
+                  fontSize: 17, fontWeight: FontWeight.bold),
+            ),
+            Icon(Icons.add)
+          ],
+        ),
+        const Divider(
+          thickness: 2,
+          color: Colors.black12,
+          height: 10,
+        ),
+        ListView.builder(
+          itemCount: lengthFoods,
+          itemBuilder: (context, index) {
+            return Container(
+              padding: EdgeInsets.symmetric(vertical: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "${data['restaurant']['menus']['drinks'][index]['name']}",
+                    style: const TextStyle(
+                      color: Colors.black45,
+                    ),
+                  ),
+                  const Icon(
+                    Icons.local_drink,
+                    color: Colors.black45,
+                  ),
+                ],
+              ),
+            );
+          },
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+        )
+      ],
+    );
   }
 }
