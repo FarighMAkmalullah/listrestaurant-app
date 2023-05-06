@@ -15,6 +15,7 @@ class DetailRestaurant extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.black),
         centerTitle: true,
         backgroundColor: Colors.white,
+        elevation: 0,
       ),
       body: const DetailComponent(),
       floatingActionButton: FloatingActionButton(
