@@ -138,7 +138,9 @@ class _FavoritePageListState extends State<FavoritePageList> {
                   child: GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => const DetailRestaurant()));
+                          builder: (_) => DetailRestaurant(
+                                id: "fnfn8mytkpmkfw1e867",
+                              )));
                     },
                     child: Image.network(
                         "https://restaurant-api.dicoding.dev/images/medium/${restaurant["pictureId"]}",

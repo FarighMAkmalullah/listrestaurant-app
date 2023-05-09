@@ -1,237 +1,215 @@
+import 'dart:math';
+import 'package:restaurant_app/models/model-detail.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:restaurant_app/screen/review-page.dart';
+import 'package:provider/provider.dart';
+import 'package:restaurant_app/stores/restaurant.dart';
 
 class DetailComponent extends StatefulWidget {
-  const DetailComponent({super.key});
+  final String id;
+  const DetailComponent({super.key, required this.id});
 
   @override
   State<DetailComponent> createState() => _DetailComponentState();
 }
 
 class _DetailComponentState extends State<DetailComponent> {
-  Map<String, dynamic> data = {
-    "restaurant": {
-      "id": "rqdv5juczeskfw1e867",
-      "name": "Melting Pot",
-      "description":
-          "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.",
-      "city": "Medan",
-      "address": "Jln. Pandeglang no 19",
-      "pictureId": "14",
-      "categories": [
-        {"name": "Italia"},
-        {"name": "Modern"}
-      ],
-      "menus": {
-        "foods": [
-          {"name": "Paket rosemary"},
-          {"name": "Toastie salmon"},
-          {"name": "Bebek crepes"},
-          {"name": "Salad lengkeng"}
-        ],
-        "drinks": [
-          {"name": "Es krim"},
-          {"name": "Sirup"},
-          {"name": "Jus apel"},
-          {"name": "Jus jeruk"},
-          {"name": "Coklat panas"},
-          {"name": "Air"},
-          {"name": "Es kopi"},
-          {"name": "Jus alpukat"},
-          {"name": "Jus mangga"},
-          {"name": "Teh manis"},
-          {"name": "Kopi espresso"},
-          {"name": "Minuman soda"},
-          {"name": "Jus tomat"}
-        ]
-      },
-      "rating": 4.2,
-      "customerReviews": [
-        {
-          "name": "Ahmad",
-          "review": "Tidak rekomendasi untuk pelajar!",
-          "date": "13 November 2019"
-        }
-      ]
-    }
-  };
+  @override
+  // void initState() {
+  //   super.initState();
+  //   Future.delayed(Duration.zero, () {
+  //     Provider.of<RestaurantProvider>(context, listen: false)
+  //         .fetchRestaurantDetail(widget.id)
+  //         .then((_) {
+  //       setState(() {});
+  //     }).catchError((error) {
+  //       print(error.toString());
+  //       showDialog(
+  //         context: context,
+  //         builder: (BuildContext context) {
+  //           return AlertDialog(
+  //             title: const Text('Error memuat Detail Restaurant'),
+  //             content: const Text(
+  //                 'Gagal untuk memuat detail silahkan untuk mencoba lagi'),
+  //             actions: [
+  //               TextButton(
+  //                 child: const Text('OK'),
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop();
+  //                 },
+  //               ),
+  //             ],
+  //           );
+  //         },
+  //       );
+  //     });
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
-      ClipRRect(
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(25),
-          bottomRight: Radius.circular(25),
-        ),
-        child: Image.network(
-            "https://restaurant-api.dicoding.dev/images/medium/${data["restaurant"]?["pictureId"]}",
-            fit: BoxFit.fitWidth),
-      ),
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 35),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 25,
+    return Consumer<RestaurantProvider>(builder: (context, provider, _) {
+      final restaurantDetail = provider.restaurantDetail;
+      if (restaurantDetail != null) {
+        return ListView(children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(25),
+              bottomRight: Radius.circular(25),
             ),
-            Text(
-              data["restaurant"]?["name"] as String,
-              style: GoogleFonts.castoro(
-                  fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 7,
-            ),
-            Row(
+            child: Image.network(
+                "https://restaurant-api.dicoding.dev/images/medium/${restaurantDetail.pictureId}",
+                fit: BoxFit.fitWidth),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 35),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(
-                  Icons.location_on,
-                ),
                 const SizedBox(
-                  width: 5,
+                  height: 25,
                 ),
                 Text(
-                  "${data["restaurant"]?["city"]}, ${data["restaurant"]?["address"]}",
-                  style: const TextStyle(
-                    fontSize: 15,
-                    color: Colors.black45,
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 7,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+                  restaurantDetail.name,
+                  style: GoogleFonts.castoro(
+                      fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 7,
+                ),
                 Row(
                   children: [
-                    Icon(
-                      Icons.circle,
-                      size: 15,
-                      color: Colors.red[300],
+                    const Icon(
+                      Icons.location_on,
                     ),
                     const SizedBox(
                       width: 5,
                     ),
                     Text(
-                      (data["restaurant"]?["categories"] as List<dynamic>)[0]
-                          ["name"],
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.red[300],
+                      "${restaurantDetail.city} ${restaurantDetail.address}",
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Colors.black45,
                       ),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 7,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.circle,
+                          size: 15,
+                          color: Colors.red[300],
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          restaurantDetail.categories[0].name,
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.red[300],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
                 const SizedBox(
-                  width: 15,
+                  height: 7,
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(
-                      Icons.circle,
-                      size: 15,
-                      color: Colors.red[300],
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      (data["restaurant"]?["categories"] as List<dynamic>)[1]
-                          ["name"],
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.red[300],
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 7,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.star,
-                      color: Colors.yellow[800],
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      "${data["restaurant"]!["rating"]}",
-                      style: GoogleFonts.castoro(
-                        fontSize: 22,
-                      ),
-                    ),
-                  ],
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const ReviewPage()));
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red, // warna teks
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(25.0), // radius sudut tombol
-                    ),
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      children: const [
-                        Icon(Icons.reviews),
-                        SizedBox(
-                          width: 7,
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.star,
+                          color: Colors.yellow[800],
                         ),
-                        Text("Reviews"),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          "${restaurantDetail.rating}",
+                          style: GoogleFonts.castoro(
+                            fontSize: 22,
+                          ),
+                        ),
                       ],
                     ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => ReviewPage(
+                                customerReviews:
+                                    restaurantDetail.customerReviews)));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red, // warna teks
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              25.0), // radius sudut tombol
+                        ),
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
+                          children: const [
+                            Icon(Icons.reviews),
+                            SizedBox(
+                              width: 7,
+                            ),
+                            Text("Reviews"),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 7,
+                ),
+                Text(
+                  "\n     ${restaurantDetail.description}",
+                  textAlign: TextAlign.justify,
+                  style: const TextStyle(
+                    color: Colors.black45,
                   ),
-                )
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 25),
+                  padding: const EdgeInsets.all(10),
+                  child: buildListFoods(restaurantDetail),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: buildListDrink(restaurantDetail),
+                ),
+                const SizedBox(
+                  height: 100,
+                ),
               ],
             ),
-            const SizedBox(
-              height: 7,
-            ),
-            Text(
-              "\n     ${data["restaurant"]?["description"]}",
-              textAlign: TextAlign.justify,
-              style: const TextStyle(
-                color: Colors.black45,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 25),
-              padding: const EdgeInsets.all(10),
-              child: buildListFoods(context),
-            ),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: buildListDrink(context),
-            ),
-            const SizedBox(
-              height: 100,
-            ),
-          ],
-        ),
-      )
-    ]);
+          )
+        ]);
+      } else {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+    });
   }
 
-  Widget buildListFoods(BuildContext context) {
-    int? lengthFoods = data['restaurant']?['menus']?['foods']?.length;
+  Widget buildListFoods(RestaurantDetailModel restaurantDetail) {
+    int? lengthFoods = restaurantDetail.menus.foods.length;
     return Column(
       children: [
         Row(
@@ -242,7 +220,7 @@ class _DetailComponentState extends State<DetailComponent> {
               style: GoogleFonts.castoro(
                   fontSize: 17, fontWeight: FontWeight.bold),
             ),
-            Icon(Icons.add)
+            const Icon(Icons.add)
           ],
         ),
         const Divider(
@@ -259,7 +237,7 @@ class _DetailComponentState extends State<DetailComponent> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "${data['restaurant']['menus']['foods'][index]['name']}",
+                    "${restaurantDetail.menus.foods[index].name}",
                     style: const TextStyle(
                       color: Colors.black45,
                     ),
@@ -279,8 +257,8 @@ class _DetailComponentState extends State<DetailComponent> {
     );
   }
 
-  Widget buildListDrink(BuildContext context) {
-    int? lengthFoods = data['restaurant']?['menus']?['drinks']?.length;
+  Widget buildListDrink(RestaurantDetailModel restaurantDetail) {
+    int? lengthFoods = restaurantDetail.menus.drinks.length;
     return Column(
       children: [
         Row(
@@ -308,7 +286,7 @@ class _DetailComponentState extends State<DetailComponent> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "${data['restaurant']['menus']['drinks'][index]['name']}",
+                    "${restaurantDetail.menus.drinks[index].name}",
                     style: const TextStyle(
                       color: Colors.black45,
                     ),
