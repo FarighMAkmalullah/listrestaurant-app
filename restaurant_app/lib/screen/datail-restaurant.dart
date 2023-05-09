@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:restaurant_app/component/detail-component.dart';
 
 class DetailRestaurant extends StatelessWidget {
-  const DetailRestaurant({super.key});
+  final String id;
+
+  const DetailRestaurant({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class DetailRestaurant extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: const DetailComponent(),
+      body: DetailComponent(id: id),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.red,
         onPressed: () {},

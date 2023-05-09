@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:restaurant_app/models/model-detail.dart';
 
 class ReviewComponent extends StatefulWidget {
-  const ReviewComponent({super.key});
+  final List<CustomerReview> review;
+  ReviewComponent({super.key, required this.review});
 
   @override
   State<ReviewComponent> createState() => _ReviewComponentState();
@@ -72,7 +74,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
   };
   @override
   Widget build(BuildContext context) {
-    int? lengthReview = data['restaurant']?['customerReviews'].length;
+    int? lengthReview = widget.review.length;
     return Container(
       padding: EdgeInsets.all(20),
       child: ListView.builder(
@@ -102,19 +104,19 @@ class _ReviewComponentState extends State<ReviewComponent> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "${data['restaurant']['customerReviews'][index]["name"]}",
+                            widget.review[index].name,
                             style: GoogleFonts.castoro(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Row(
                             children: [
-                              Icon(
-                                Icons.star,
-                                color: Colors.yellow[800],
-                              ),
+                              // Icon(
+                              //   Icons.star,
+                              //   color: Colors.yellow[800],
+                              // ),
                               Text(
-                                "${data["restaurant"]!["rating"]}",
+                                widget.review[index].date,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black45),
@@ -124,7 +126,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
                         ],
                       ),
                       Text(
-                        "${data['restaurant']['customerReviews'][index]["review"]}",
+                        widget.review[index].review,
                         overflow: TextOverflow.ellipsis,
                       )
                     ],
